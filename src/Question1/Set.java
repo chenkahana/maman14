@@ -33,31 +33,29 @@ public class Set<T> implements Iterable {
         return set.contains(item);
     }
 
-    private ArrayList<T> getSet() {
-        return set;
-    }
-
     public void union(Set<T> otherSet) {
-        ArrayList<T> arrayList = otherSet.getSet();
-        for (T t : arrayList) {
-            insert(t);
+        Iterator<T> it = otherSet.iterator();
+        while (it.hasNext()) {
+            insert(it.next());
         }
     }
 
     public void intersect(Set<T> otherSet) {
-
-        for (int i = 0; i < set.size(); i++) {
-            if (!otherSet.isMember(set.get(i))) {
-                this.delete(set.get(i));
-                i--;
+        Iterator<T> it = iterator();
+        ArrayList<T> retArr = new ArrayList<>();
+        while (it.hasNext()) {
+            T element = it.next();
+            if (otherSet.isMember(element)) {
+                retArr.add(element);
             }
         }
+        set = retArr;
     }
 
     public boolean isSubset(Set<T> otherSet) {
-        ArrayList<T> arrayList = otherSet.getSet();
-        for (T t : arrayList) {
-            if (!set.contains(t)) {
+        Iterator<T> it = otherSet.iterator();
+        while (it.hasNext()) {
+            if (!isMember(it.next())) {
                 return false;
             }
         }
@@ -67,9 +65,10 @@ public class Set<T> implements Iterable {
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
-        for (int i = 0; i < set.size(); i++) {
-            res.append(set.get(i));
-            if (i < set.size() - 1) {
+        Iterator<T> it = iterator();
+        while (it.hasNext()) {
+            res.append(it.next());
+            if (it.hasNext()) {
                 res.append(", ");
             }
         }

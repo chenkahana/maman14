@@ -24,21 +24,21 @@ public class Main {
         fillSet(set2);
         fillSet(set3);
 
-        System.out.println("Question1.Set 1: " + set1);
-        System.out.println("Question1.Set 2: " + set2);
-        System.out.println("Question1.Set 3: " + set3);
+        System.out.println("Set 1: " + set1);
+        System.out.println("Set 2: " + set2);
+        System.out.println("Set 3: " + set3);
 
         set1.union(set2);
-        System.out.println("Question1.Set 1 after a union with Question1.Set 2: " + set1);
+        System.out.println("Set 1 after a union with Set 2: " + set1);
 
         set1.intersect(set3);
-        System.out.println("Question1.Set 1 after an intersection with Question1.Set 3: " + set1);
+        System.out.println("Set 1 after an intersection with Set 3: " + set1);
 
-        System.out.print("Insert a number ");
+        System.out.print("Insert a number: ");
         Scanner scanner = new Scanner(System.in);
         int num1 = scanner.nextInt();
         scanner.nextLine();
-        System.out.print("Insert a number ");
+        System.out.print("Insert a number: ");
         int num2 = scanner.nextInt();
         scanner.nextLine();
 
@@ -52,10 +52,10 @@ public class Main {
         System.out.println("Your number is" + (set1.isMember(num3) ? "" : "n't") + " a member of: " + set1);
 
         set2.insert(num3);
-        System.out.println("Question1.Set 2 with your number: " + set2);
+        System.out.println("Set 2 with your number: " + set2);
 
         set3.delete(num3);
-        System.out.println("Question1.Set 3 with your number: " + set3);
+        System.out.println("Set 3 with your number: " + set3);
     }
 
     private static void question1SectionC() {
