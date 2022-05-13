@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 public class Controller {
 
@@ -35,11 +34,14 @@ public class Controller {
     @FXML
     public TextField dictExportName;
 
-    private Hashtable<String, String> dictionary;
+    private TreeMap<String, String> dictionary;
 
+    /**
+     * I chose TreeMap collection because it's a sorted collection that enables all dictionary action in O(n) runtime.
+     */
 
     public void initialize() {
-        dictionary = new Hashtable<>();
+        dictionary = new TreeMap<>();
     }
 
     public void searchDictionary(ActionEvent actionEvent) {
@@ -58,7 +60,6 @@ public class Controller {
         if (!dictionary.containsKey(definition)) {
             String description = descriptionTextArea.getText();
             dictionary.put(definition, description);
-            sortDictionary();
             errorLabel.setText("WORD ADDED TO DICTIONARY");
 
         } else {
@@ -66,18 +67,6 @@ public class Controller {
         }
         descriptionTextArea.setText("");
         textField.setText("");
-    }
-
-    private void sortDictionary() {
-        List<String> keys = Collections.list(dictionary.keys());
-        Collections.sort(keys);
-        Iterator<String> it = keys.iterator();
-        Hashtable<String, String> newDict = new Hashtable<>();
-        while (it.hasNext()) {
-            String element = it.next();
-            newDict.put(element, dictionary.get(element));
-        }
-        dictionary = newDict;
     }
 
     public void exportDictionaryToFile(ActionEvent actionEvent) {
@@ -94,17 +83,17 @@ public class Controller {
         }
     }
 
-    private String getNameOfFileFRomGivenName(String name){
+    private String getNameOfFileFRomGivenName(String name) {
         return name.endsWith(".json") ? name : name + ".json";
     }
 
-    private String getJsonStringFromDictionary(Hashtable<String, String> dict) {
-        List<String> keys = Collections.list(dict.keys());
-        Iterator<String> it = keys.iterator();
+    private String getJsonStringFromDictionary(TreeMap<String, String> dict) {
+        Set<Map.Entry<String, String>> set = dict.entrySet();
+        Iterator<Map.Entry<String, String>> it = set.iterator();
         StringBuilder json = new StringBuilder("[\n");
         while (it.hasNext()) {
-            String key = it.next();
-            String valueToAddToJson = key + ":" + dict.get(key) + "\n";
+            Map.Entry<String, String> element = it.next();
+            String valueToAddToJson = element.getKey() + ":" + element.getValue() + "\n";
             json.append(valueToAddToJson);
         }
         json.append("]");
@@ -126,9 +115,9 @@ public class Controller {
                 if (data.equals("[") || data.equals("]")) {
                     continue;
                 }
-                String[] keyValue= data.split(":");
-                dictionary= new Hashtable<>();
-                dictionary.put(keyValue[0],keyValue[1]);
+                String[] keyValue = data.split(":");
+                dictionary = new TreeMap<>();
+                dictionary.put(keyValue[0], keyValue[1]);
                 System.out.println(data);
             }
             myReader.close();
