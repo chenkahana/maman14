@@ -44,7 +44,10 @@ public class Main {
 
         Set<Integer> set4 = new Set<>(new Integer[]{num1, num2});
         System.out.println("Your set: " + set4);
-        System.out.println("is" + (set1.isSubset(set4) ? "" : "n't") + " a subset of: " + set1);
+        Set<Integer>[] sets = new Set[]{set1, set2, set3};
+        for (int i = 0; i < sets.length; i++) {
+            System.out.println("is" + (sets[i].isSubset(set4) ? "" : "n't") + " a subset of Set " + (i + 1) + ": " + sets[i]);
+        }
 
         System.out.print("Now Enter a final number: ");
         int num3 = scanner.nextInt();
@@ -67,8 +70,8 @@ public class Main {
         Set<Person> personSet = new Set<>(new Person[]{person1, person2, person3, person4, person5});
         System.out.println(personSet);
 
-        MinValue<Person> minValue= new MinValue<>();
-        Person min= minValue.getMinValue(personSet);
-        System.out.println("Min value is: "+min);
+        MinValue<Person> minValue = new MinValue<>();
+        Person min = minValue.getMinValue(personSet);
+        System.out.println("Min value is: " + min);
     }
 }
