@@ -2,7 +2,6 @@ package Question2;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -15,58 +14,52 @@ import java.util.*;
 
 public class Controller {
 
+
     @FXML
-    public Button searchButton;
-    @FXML
-    public TextField textField;
+    public TextField defTextField;
     @FXML
     public TextArea descriptionTextArea;
-    @FXML
-    public Label descriptionLabel;
-    @FXML
-    public Button addButton;
-    @FXML
-    public Button exportDictionary;
-    @FXML
-    public Button importDictionary;
     @FXML
     public Label errorLabel;
     @FXML
     public TextField dictExportName;
 
-    private TreeMap<String, String> dictionary;
+    private Dictionary<String, String> dictionary = new Dictionary<>();
 
-    /**
-     * I chose TreeMap collection because it's a sorted collection that enables all dictionary action in O(n) runtime.
-     */
-
-    public void initialize() {
-        dictionary = new TreeMap<>();
-    }
 
     public void searchDictionary(ActionEvent actionEvent) {
-        String definition = textField.getText();
+        String definition = defTextField.getText();
         if (dictionary.containsKey(definition)) {
             descriptionTextArea.setText(dictionary.get(definition));
             errorLabel.setText("");
         } else {
-            errorLabel.setText("WORD ADDED TO DICTIONARY");
+            errorLabel.setText("WORD DOESN'T EXIST IN DICTIONARY");
         }
 
     }
 
-    public void addToDictionary(ActionEvent actionEvent) {
-        String definition = textField.getText();
-        if (!dictionary.containsKey(definition)) {
-            String description = descriptionTextArea.getText();
-            dictionary.put(definition, description);
-            errorLabel.setText("WORD ADDED TO DICTIONARY");
-
+    public void removeFromDictionary(ActionEvent actionEvent) {
+        String definition = defTextField.getText();
+        if (dictionary.containsKey(definition)) {
+            dictionary.remove(definition);
+            errorLabel.setText("WORD REMOVED FROM DICTIONARY");
         } else {
-            errorLabel.setText("WORD ALREADY EXIST IN\nDICTIONARY");
+            errorLabel.setText("WORD DOESN'T EXIST IN DICTIONARY");
         }
+
         descriptionTextArea.setText("");
-        textField.setText("");
+        defTextField.setText("");
+
+    }
+
+    public void addToDictionary(ActionEvent actionEvent) {
+        String definition = defTextField.getText();
+        String description = descriptionTextArea.getText();
+        dictionary.put(definition, description);
+        errorLabel.setText("WORD ADDED/ UPDATED TO DICTIONARY");
+
+        descriptionTextArea.setText("");
+        defTextField.setText("");
     }
 
     public void exportDictionaryToFile(ActionEvent actionEvent) {
@@ -76,7 +69,7 @@ public class Controller {
             String dictJson = getJsonStringFromDictionary(dictionary);
             myWriter.write(dictJson);
             myWriter.close();
-            errorLabel.setText("Successfully exported to:\n" + name);
+            errorLabel.setText("Successfully exported to:" + name);
         } catch (IOException e) {
             errorLabel.setText("Error Occurred.");
             System.out.println(e.getMessage());
@@ -87,13 +80,14 @@ public class Controller {
         return name.endsWith(".json") ? name : name + ".json";
     }
 
-    private String getJsonStringFromDictionary(TreeMap<String, String> dict) {
-        Set<Map.Entry<String, String>> set = dict.entrySet();
-        Iterator<Map.Entry<String, String>> it = set.iterator();
-        StringBuilder json = new StringBuilder("[\n");
+    private String getJsonStringFromDictionary(Dictionary<String, String> dict) {
+        Set<String> set = dict.keys();
+        Iterator<String> it = set.iterator();
+        StringBuilder json = new StringBuilder("[");
         while (it.hasNext()) {
-            Map.Entry<String, String> element = it.next();
-            String valueToAddToJson = element.getKey() + ":" + element.getValue() + "\n";
+            String key = it.next();
+            String value = dict.get(key);
+            String valueToAddToJson = key + ":" + value;
             json.append(valueToAddToJson);
         }
         json.append("]");
@@ -110,21 +104,23 @@ public class Controller {
             String name = getNameOfFileFRomGivenName(dictExportName.getText());
             File dictFile = new File(name);
             Scanner myReader = new Scanner(dictFile);
+            dictionary = new Dictionary<>();
+
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 if (data.equals("[") || data.equals("]")) {
                     continue;
                 }
                 String[] keyValue = data.split(":");
-                dictionary = new TreeMap<>();
                 dictionary.put(keyValue[0], keyValue[1]);
-                System.out.println(data);
             }
             myReader.close();
-            errorLabel.setText("Successfully imported to:\n" + name);
+            errorLabel.setText("Successfully imported from: " + name);
         } catch (FileNotFoundException e) {
             errorLabel.setText("Error Occurred");
             System.out.println(e.getMessage());
         }
     }
+
+
 }

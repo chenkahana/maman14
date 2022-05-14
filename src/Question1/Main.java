@@ -1,6 +1,6 @@
 package Question1;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -14,6 +14,7 @@ public class Main {
         question1SectionAAndB();
         question1SectionC();
     }
+
 
     private static void question1SectionAAndB() {
         Set<Integer> set1 = new Set<>();
@@ -63,13 +64,7 @@ public class Main {
 
     private static void question1SectionC() {
 
-        Set<Person> personSet = new Set<>( new Person[]{
-                new Person("123456789", "first1", "last1", 1991),
-                new Person("111111111", "first2", "last2", 1992),
-                new Person("123456689", "first3", "last3", 1993),
-                new Person("111111112", "first4", "last4", 1994),
-                new Person("111111114", "first5", "last5", 1995)
-        });
+        Set<Person> personSet = new Set<>(new Person[]{new Person("123456789", "first1", "last1", 1991), new Person("111111111", "first2", "last2", 1992), new Person("123456689", "first3", "last3", 1993), new Person("111111112", "first4", "last4", 1994), new Person("111111114", "first5", "last5", 1995)});
         System.out.println(personSet);
 
         MinValue<Person> minValue = new MinValue<>();
