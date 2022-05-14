@@ -62,12 +62,14 @@ public class Main {
     }
 
     private static void question1SectionC() {
-        Person person1 = new Person("123456789", "first1", "last1", 1991);
-        Person person2 = new Person("111111111", "first2", "last2", 1992);
-        Person person3 = new Person("123456689", "first3", "last3", 1993);
-        Person person4 = new Person("111111112", "first4", "last4", 1994);
-        Person person5 = new Person("111111114", "first5", "last5", 1995);
-        Set<Person> personSet = new Set<>(new Person[]{person1, person2, person3, person4, person5});
+
+        Set<Person> personSet = new Set<>( new Person[]{
+                new Person("123456789", "first1", "last1", 1991),
+                new Person("111111111", "first2", "last2", 1992),
+                new Person("123456689", "first3", "last3", 1993),
+                new Person("111111112", "first4", "last4", 1994),
+                new Person("111111114", "first5", "last5", 1995)
+        });
         System.out.println(personSet);
 
         MinValue<Person> minValue = new MinValue<>();
