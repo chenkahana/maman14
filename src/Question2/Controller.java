@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+
 public class Controller {
 
 
@@ -25,7 +26,6 @@ public class Controller {
     public TextField dictExportName;
 
     private Dictionary<String, String> dictionary = new Dictionary<>();
-
 
     public void searchDictionary(ActionEvent actionEvent) {
         String definition = defTextField.getText();
@@ -83,11 +83,11 @@ public class Controller {
     private String getJsonStringFromDictionary(Dictionary<String, String> dict) {
         Set<String> set = dict.keys();
         Iterator<String> it = set.iterator();
-        StringBuilder json = new StringBuilder("[");
+        StringBuilder json = new StringBuilder("[\n");
         while (it.hasNext()) {
             String key = it.next();
             String value = dict.get(key);
-            String valueToAddToJson = key + ":" + value;
+            String valueToAddToJson = key + ":" + value + "\n";
             json.append(valueToAddToJson);
         }
         json.append("]");
